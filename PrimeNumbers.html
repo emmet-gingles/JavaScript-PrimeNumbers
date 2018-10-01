@@ -1,0 +1,119 @@
+<html>
+<head>
+	<title>Prime Numbers</title>
+	<meta charset="windows-1252">
+	<script>
+		// function to populate dropdown menus with numbers 
+		function loadLists(){
+			// dropdown menu for minimum number 
+			var minSelect = document.getElementById("minNum");
+			// dropdown menu for maximum number 
+			var maxSelect = document.getElementById("maxNum");
+			
+			// add options for numbers 1 to 100 
+			for(i=1;i<=100;i++){	
+				var opt = document.createElement('option');
+				opt.value = i;
+				opt.innerHTML = i;
+				minSelect.append(opt);
+			}			
+			for(i=1;i<=100;i++){	
+				var opt = document.createElement('option');
+				opt.value = i;
+				opt.innerHTML = i;
+				maxSelect.append(opt);
+			}			
+		    // set default selected options for each dropdown
+			minSelect.selectedIndex = 0;
+			maxSelect.selectedIndex = 99;
+		}
+		
+		// function to show all the prime numbers between two numbers
+		function showPrime(){
+			// get the value of the selected index for each dropdown menu and set them to variables
+			var min = document.getElementById("minNum").value;
+			var max = document.getElementById("maxNum").value;
+			// check that minimum number is not grater than maximum number 
+			if(min > max){
+				alert("Start number cannot be greater than end number");
+			}
+			// check that minimum number is not the same as maximum number
+			else if(min == max){
+				alert("Start number and end number must be different");
+			}
+			else{
+				// array to store prime numbers
+				primeNumbers = [];
+				// loop through each number starting from the minimum up to the maximum
+				for(i=min;i<= max;i++){
+					// if it is an even number 
+					if(i%2 == 0){
+						// if number is two then add it to prime numbers 
+						if(i == 2){
+							primeNumbers.push(i);
+						}
+					}
+					// otherwise it is an odd number 
+					else{
+						// if number is one then add it to prime numbers 
+						if(i == 1){
+							primeNumbers.push(i);
+						}
+						else{
+							// calculate the square root of the number 
+							var sqRoot = Math.sqrt(i);
+							// check that number is not the square of another number 
+							if(sqRoot != Math.floor(sqRoot)){
+								// floor it to ensure it is a whole number 
+								sqRoot = Math.floor(sqRoot);
+								// variable to determine whether or not the current number is prime 
+								var isPrime = true;
+								// start at 3 and continue up to the square root 
+								for(j=3;j<= sqRoot;j++){
+									// if j divides evenly into i then it is not prime so break out of loop
+									if(i%j == 0){										
+										isPrime = false;
+										break;																	
+									}
+								}
+								// if number is still prime then add it to the prime numbers 
+								if(isPrime){
+									primeNumbers.push(i);
+								}
+							}
+						}
+					}
+				}
+			}
+			// variable to print each prime number
+			var nums = '';
+			// loop through each prime number and append it to output 
+			for(i=0;i< primeNumbers.length;i++){
+				// if current index is less than the final index then append the number followed by a comma 
+				if(i < primeNumbers.length-1){
+					nums += primeNumbers[i] + ", ";
+				}
+				// else it is the last numbers so just append the number 
+				else{
+					nums += primeNumbers[i];
+				}
+			}
+			// set span text to message followed by the list of prime numbers 
+			document.getElementById("output").innerHTML = "There are "+primeNumbers.length + " prime numbers between " + min + " and " + max + ' <br/> '  + nums;
+		}
+		
+	</script>
+	</head>
+	<body onload="loadLists()">
+		<p>Select two numbers and see all the prime numbers between them</p>
+		<br/>
+		<select id="minNum">
+		</select>
+		<select id="maxNum">
+		</select>
+		<br/>
+		<span id="output"></span>
+		<br/>
+		<button onclick="showPrime()">Show prime numbers</button>
+	</body>
+</html>
